@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-ecommerce-scraper",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Client-side rendering approach for extracting product data from ecommerce websites with pagination using undetectable puppeteer-cluster",
   "main": "src/index.js",
   "dependencies": {
