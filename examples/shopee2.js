@@ -53,6 +53,6 @@ async function extractShopee(page, queueData) {
 		queueEntries: ['android', 'iphone'],
 		proxyEndpoint: process.env.PROXY_ENDPOINT, // Must be in the form of http://username:password@host:port
 		monitor: false,
-		closeWhenFinish: false, // After solving Captcha, save uour profile, so you may avoid doing it next time
+		useProfile: false, // After solving Captcha, save uour profile, so you may avoid doing it next time
 	});
 })();
