@@ -1,15 +1,15 @@
 require('dotenv').config();
 const { clusterWrapper, createFile, saveProduct, navigatePage } = require('puppeteer-ecommerce-scraper');
 
-async function extractTiki(page, keyword) {
+async function extractTiki(page, queueData) {
 	const products = [];
 	let totalPages = 1;
 	let notLastPage = true;
 
-	const filePath = `./data/tiki-${keyword}.csv`;
+	const filePath = `./data/tiki-${queueData}.csv`;
 	createFile(filePath, 'title,price,imgUrl\n');
 
-	const url = 'https://tiki.vn/search?q=' + keyword;
+	const url = 'https://tiki.vn/search?q=' + queueData;
 	await page.goto(url, { waitUntil: 'networkidle2', timeout: 0 });
 
 	while (notLastPage) {
@@ -40,13 +40,13 @@ async function extractTiki(page, keyword) {
 		});
 		totalPages += notLastPage;
 	}
-	console.log(`[DONE] Fetched ${products.length} ${keyword} products from Tiki`);
+	console.log(`[DONE] Fetched ${products.length} ${queueData} products from Tiki`);
 }
 
 (async () => {
 	await clusterWrapper({
 		func: extractTiki,
-		keywords: ['android', 'iphone'],
+		queueEntries: ['android', 'iphone'],
 		proxyEndpoint: process.env.PROXY_ENDPOINT, // Must be in the form of http://username:password@host:port
 		monitor: false,
 		useProfile: false,

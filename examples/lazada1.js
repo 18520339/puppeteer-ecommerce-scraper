@@ -1,14 +1,14 @@
 require('dotenv').config();
 const { scrapeWithPagination, clusterWrapper } = require('puppeteer-ecommerce-scraper');
 
-async function extractLazada(page, keyword) {
+async function extractLazada(page, queueData) {
 	const { products } = await scrapeWithPagination({
 		page, // Puppeteer page object
 		scrollConfig: { scrollDelay: 500, scrollStep: 500, numOfScroll: 2, direction: 'both' },
 		scrapingConfig: {
-			url: `https://www.lazada.vn/catalog/?q=${keyword}`,
+			url: `https://www.lazada.vn/catalog/?q=${queueData}`,
 			productSelector: '[data-qa-locator="product-item"]',
-			filePath: `./data/lazada-${keyword}.csv`,
+			filePath: `./data/lazada-${queueData}.csv`,
 			fileHeader: 'title,price,imgUrl\n',
 		},
 		paginationConfig: {
@@ -29,13 +29,13 @@ async function extractLazada(page, keyword) {
 			];
 		},
 	});
-	console.log(`[DONE] Fetched ${products.length} ${keyword} products from Lazada`);
+	console.log(`[DONE] Fetched ${products.length} ${queueData} products from Lazada`);
 }
 
 (async () => {
 	await clusterWrapper({
 		func: extractLazada,
-		keywords: ['android', 'iphone'],
+		queueEntries: ['android', 'iphone'],
 		proxyEndpoint: process.env.PROXY_ENDPOINT, // Must be in the form of http://username:password@host:port
 		monitor: false,
 		useProfile: true, // After solving Captcha, save uour profile, so you may avoid doing it next time
