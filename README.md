@@ -2,7 +2,7 @@
 
 > Demo: https://youtu.be/KOoI-CLNHxU
 
-This is a flexible web scraper for extracting product data from various ecommerce websites:
+This is a flexible web scraper for extracting product data from various e-commerce websites:
 - It uses high-level API from [Puppeteer](https://github.com/puppeteer/puppeteer) to control **Chrome** or **Chromium**, making it capable of extracting data from websites that dynamically load content using JavaScript. 
 - This scraper is also designed to handle pagination and bot detection, along with the use of [puppeteer-cluster](https://github.com/thomasdondorf/puppeteer-cluster) for efficient and parallel scraping.
 
@@ -13,9 +13,9 @@ npm i puppeteer-ecommerce-scraper
 
 The [examples](./examples/) folder contains my example scripts for different e-commerce websites. You can use them as a starting point for your own scraping tasks. 
 
-For example, the [tiki1.js](./examples/tiki1.js) script configures the scraper to navigate throughout the `Android` and `iPhone` product pages of [Tiki](https://tiki.vn/) (a Vietnamese ecommerce website) and extract each *product title*, *its price*, and *image URL* from them, using a consistent user profile and a proxy server. 
+For example, the [tiki1.js](./examples/tiki1.js) script configures the scraper to navigate through the `Android` and `iPhone` product pages of [Tiki](https://tiki.vn/) (a Vietnamese e-commerce website) and extract each *product title*, *its price*, and *image URL* from them, using a consistent user profile and a proxy server. 
 
-This script only use 2 functions: [clusterWrapper](#clusterwrapper-) to wrap the scraping process and [scrapeWithPagination](#scraperscrapewithpagination-), an end-to-end function to scrape, paginate, and save the product data from the website automatically. If you want a more customized scraping process, you can use the other [functions provided](#functions-provided) in the different modules. I also provided scripts with post-fix `2` (such as [tiki2.js](./examples/tiki2.js)) to demonstrate how to use these functions to scrape the same website.
+This script only uses 2 functions: [clusterWrapper](#clusterwrapper-) to wrap the scraping process and [scrapeWithPagination](#scraperscrapewithpagination-), an end-to-end function to scrape, paginate, and save the product data from the website automatically. If you want a more customized scraping process, use the other [functions provided](#functions-provided) in the different modules. I also provided scripts with post-fix `2` (such as [tiki2.js](./examples/tiki2.js)) to demonstrate how to use these functions to scrape the same website.
 
 # Functions Provided
 
@@ -56,21 +56,21 @@ You can run the [test.js](./test.js) script to see the bot detection result when
 
 ```js
 async function scrapeWithPagination({ 
-	page, // Puppeteer page object, which represents a single tab in Chrome
-	extractFunc, // Function to extract product info from product DOM
-	scrapingConfig = { // Configuration for scraping process
+    page, // Puppeteer page object, which represents a single tab in Chrome
+    extractFunc, // Function to extract product info from product DOM
+    scrapingConfig = { // Configuration for scraping process
         url: '', // URL of the webpage to scrape
         productSelector: '', // CSS selector for product elements
         filePath: '', // File path to save the scraped data. If not provided, the function will generate one based on the URL
         fileHeader: '' // Header for the file
     },
-	paginationConfig = { // Configuration for handling pagination
+    paginationConfig = { // Configuration for handling pagination
         nextPageSelector: '', // CSS selector for the "next page" button
         disabledSelector: '', // CSS selector for the disabled state of the "next page" button (to detect the end of pagination)
         sleep: 1000, // Delay the execution to allow for page loading or other asynchronous operations to complete
         maxPages: 0 // Maximum number of pages to scrape (0 for unlimited)
     },
-	scrollConfig = { // Configuration for auto-scrolling
+    scrollConfig = { // Configuration for auto-scrolling
         scrollDelay: NaN, // Delay between scrolls
         scrollStep: NaN, // The amount (size) to scroll each time
         numOfScroll: 1, // Number of scrolls to perform
@@ -84,7 +84,7 @@ The scraper can navigate through multiple pages of results using this function:
 1. It begins by navigating to the specified `url` and uses the `nextPageSelector` and `disabledSelector` from the `paginationConfig` to identify the "next page" button on the webpage and clicks it to load the next set of results. 
 2. This process is repeated until all pages have been scraped (the "next page" button has `disabledSelector`) or a maximum limit (`maxPages`) has been reached.
 3. Inside the loop, the function waits for the product elements to be visible on the page, then [autoScroll](#scraperautoscroll-) the page according to the `scrollConfig` setup. This is done to ensure that all product elements are fully rendered and can be scraped.
-4. Next, the function scrapes the product information using the provided `extractFunc` and then [saveProduct](#scrapersaveproduct-) to the file.
+4. Next, it scrapes the product information using the provided `extractFunc` and then [saveProduct](#scrapersaveproduct-) to the file.
 5. Finally, the function attempts to navigate to the next page using the [navigatePage](#scrapernavigatepage-) function and the `paginationConfig` parameters.
 
 ## `scraper`.autoScroll [🔝](#functions-provided)
@@ -121,7 +121,7 @@ async function navigatePage({
 ```
 👉 **return** `Boolean` indicating whether the navigation was successful or if there is a "next page".
 
-This function identifies if "next page" aimed to navigate is not the last page by using `disabledSelector`. If there is a "next page", it waits for current the navigation to complete and then click the `nextPageSelector`. Otherwise, it returns `false`, indicating that there is no "next page" to navigate. This could be used by the calling code to decide whether to continue scraping or stop.
+This function identifies if "next page" aimed to navigate is not the last page by using `disabledSelector`. If there is a "next page", it waits for current the navigation to complete and then clicks the `nextPageSelector`. Otherwise, it returns `false`, indicating that there is no "next page" to navigate. This could be used by the calling code to decide whether to continue scraping or stop.
 
 ## `helpers` [🔝](#functions-provided)
 
